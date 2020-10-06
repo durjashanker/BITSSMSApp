@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/menu.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <!-- <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script> -->
+
+      <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+      <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+      <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+      <script src="https://unpkg.com/sticky-table-headers"></script>
+      <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+<style>
+body {margin:0;}
+</style>
+<body>
+
+<div class="icon-bar">
+  <a href="#" onclick="goHome();"><i class="fa fa-home"></i></a> 
+  <a href="#" onclick="gocustomer();" ><i class="fa fa-user"></i></a> 
+  <a href="#" class="active" href="#"><i class="fa fa-id-card"></i></a> 
+  <a href="#" onclick="showExit();"><i class="fa fa-close"></i></a>
+  <a href="#" onclick="goSettings();"><i class="fa fa-cog"></i></a> 
+</div>
+    <div class="row flex-container">
+       <span style="float:right;">
+          <label for="cNo">CAF Number :</label><label id="cNo" style="font-weight:bold;text-transform:capitalize;padding-left:2px;"></label>
+       </span>
+    </div>
+
+<div class="container-fluid form-horizontal">
+<!-- <form action="" class="form-horizontal"> -->
+    <div class="form-group">
+        <label for="first_name" class="col-xs-2 control-label">Customer Name</label>
+        <div class="col-xs-10">
+           <div class="input-group">
+            <span class="input-group-addon">
+            <span><i class='fas fa-user' style='font-size:16px' aria-hidden="true"></i>
+            </span>
+            </span> 
+            <input type="text" class="form-control input-sm" id="first_name" aria-label="User Name" placeholder="First Name | Last Name" >
+          </div>
+        <!-- <input type="text" class="form-control input-sm" id="first_name" name="first_name"> -->
+        </div>
+    </div>
+<!--     <div class="form-group">
+        <label for="last_name" class="col-xs-2 control-label">Last Name</label>
+        <div class="col-xs-10">
+        <input type="text" class="form-control input-sm" id="last_name" name="last_name">
+        </div>
+    </div> -->
+    <div class="form-group">
+        <label for="mobile_number" class="col-xs-2 control-label">Mobile Number</label>
+        <div class="col-xs-10">
+          <div class="input-group">
+            <span class="input-group-addon">
+            <span><i class='fas fa-mobile-alt' style='font-size:16px' aria-hidden="true"></i>
+            </span>
+            </span> 
+            <input type="tel" class="form-control input-sm" id="mobile_number" aria-label="Mobile Number" placeholder="Mobile number" >
+          </div>
+        <!-- <input type="text" class="form-control input-sm" id="mobile_number" name="mobile_number"> -->
+        <!-- <span id="mobile_number" class="help-block">Mobile number cannot be Empty or Duplicate.</span> -->
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="telephone_number" class="col-xs-2 control-label">Phone Number</label>
+        <div class="col-xs-10">
+          <div class="input-group">
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-phone-alt" aria-hidden="true">
+              </span>
+            </span> 
+            <input type="text" class="form-control input-sm" id="telephone_number" aria-label="Phone Number" placeholder="Phone number" >
+          </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="email_id" class="col-xs-2 control-label">Email ID</label>
+        <div class="col-xs-10">
+          <div class="input-group">
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-envelope" aria-hidden="true">
+              </span>
+            </span> 
+             <input type="text" class="form-control input-sm" id="email_id" name="email_id" placeholder="someone@someplace.com" >
+          </div>  
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="id_type" class="col-xs-2 control-label">Identity Proof</label>
+        <div class="col-xs-4">
+          <select id="id_type" class="form-control input-sm">
+            <option value="1">Aadhar Card</option>
+            <option value="2">Driving License</option>
+            <option value="3">PAN Card</option>
+            <option value="4">Voter ID Card</option>
+            <option value="5">Passport</option>
+          </select>
+        <!-- <input type="text" class="form-control input-sm" id="id_type" name="id_type"> -->
+        </div>
+        <div class="col-xs-6">
+        <input type="text" class="form-control input-sm" id="id_number" name="id_number" placeholder="ID Number" >
+        </div>
+    </div>
+    <div class="form-group"> <!-- fa fa-address-card -->
+        <label for="installation_address" class="col-xs-2 control-label">Installation Address</label>
+        <div class="col-xs-10">
+          <div class="input-group">
+            <span class="input-group-addon">
+              <span><i class='fas fa-address-card' style='font-size:16px' aria-hidden="true"></i></span>
+            </span> 
+            <input type="text" class="form-control input-sm" id="installation_address" name="installation_address" >
+          </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="billing_address" class="col-xs-2 control-label">Billing Address</label>
+        <div class="col-xs-10">
+          <div class="input-group">
+            <span class="input-group-addon">
+              <span><i class='fas fa-address-card' style='font-size:16px' aria-hidden="true"></i></span>
+            </span> 
+            <input type="text" class="form-control input-sm" id="billing_address" name="billing_address" >
+          </div>   
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-10">
+        <button type="submit" class="btn btn-default" onclick="savecafdata();">Save</button>
+        </div>
+    </div>
+    
+<!-- </form> -->
+</div>
+    <!-- Image loader -->
+        <div id='loader' style="display:none;width:69px;height:89px;solid black;position:absolute;top:40%;left:40%;padding:2px;">
+            <img src='../www/img/processing.gif' width='64px' height='64px'><br>Loading..
+        </div>
+    <!-- Image loader -->
+
+<script>
+  $(document).ready(function() {
+       //clearData();
+  	   var cafNumber = localStorage.getItem("cafNumber");
+       if(cafNumber == '' || cafNumber == null || cafNumber == '000000'){
+         //alert('CAF Number not available !');
+         return false;
+       }
+      
+       $('#cNo').html(cafNumber);
+
+       getcafdata(cafNumber);
+       
+      });
+  
+      function goSettings(){
+            window.location='settings.html';
+          }
+      function goHome(){
+        window.location='index.html';
+          }
+      function gocustomer(){
+        window.location='customer.html';
+          }
+      function quit(){
+         navigator.app.exitApp();
+          }
+      function clearData(){
+          // clear all CAF Data
+           $('#first_name').val('');
+           $('#mobile_number').val('');
+           $('#telephone_number').val('');
+           $('#email_id').val('');
+           $('#id_type').val(1);
+           $('#id_number').val('');
+           $('#installation_address').val('');
+           $('#billing_address').val('');
+
+          }
+
+      function getcafdata(cafNumber){
+        var defaultUrl = localStorage.getItem("dUrl");
+        var myUrl = defaultUrl + "/caf/cafNo/" + cafNumber;
+        //alert(myUrl);
+        $.ajax({
+            url : myUrl,
+            dataType   : 'json',
+            crossDomain: true,
+            cache: false,
+            beforeSend : function() {$("#loader").show();},
+            complete   : function() {$("#loader").hide();},
+            success    : function(response){
+               var myresult = JSON.stringify(response);
+               var result = JSON.parse(myresult,function (key, value){
+                 return value;
+               });
+               if(result.cafdata.length != 1){
+                //alert('Cannot find any CAF Data.\nPlease check !');
+                showAlert('Cannot find any CAF Data.\nPlease check !',alertDismissed,'Search CAF Data','OK') 
+                return false;
+               }
+               $.each(result.cafdata, function(i, field){
+                 //alert(field.FullName);
+                 $('#first_name').val(field.FullName);
+                 $('#mobile_number').val(field.MobileNo);
+                 $('#telephone_number').val(field.PhoneNo);
+                 $('#email_id').val(field.EmailID);
+                 $('#id_type').val(field.IDType);
+                 $('#id_number').val(field.IDNumber);
+                 $('#installation_address').val(field.IAddress);
+                 $('#billing_address').val(field.BAddress);
+               });
+            },
+            error      : function(jqXHR, exception) {
+                   clearData();
+
+                   if (jqXHR.status === 0) {
+                     // alert('Not connect.n Verify Network.');
+                      showAlert('Not connected. Verify Network.',alertDismissed,'Network connection','OK') //msg,dismissfunc,title,btnName)
+                  } else if (jqXHR.status == 404) {
+                      //alert('Requested page not found. [404]');
+                       showAlert('Requested page not found. [404]',alertDismissed,'Network connection','OK') //msg,dismissfunc,title,btnName)
+                  } else if (jqXHR.status == 500) {
+                      //alert('Internal Server Error [500].');
+                       showAlert('Internal Server Error [500].',alertDismissed,'Network connection','OK') //msg,dismissfunc,title,btnName)
+                  } else if (exception === 'parsererror') {
+                      //alert('Requested JSON parse failed.');
+                      showAlert('Requested JSON parse failed.',alertDismissed,'Network connection','OK') //msg,dismissfunc,title,btnName)
+                  } else if (exception === 'timeout') {
+                      //alert('Time out error.');
+                      showAlert('Time out error.',alertDismissed,'Network connection','OK') //msg,dismissfunc,title,btnName)
+                  } else if (exception === 'abort') {
+                      //alert('Ajax request aborted.');
+                      showAlert('Ajax request aborted.',alertDismissed,'Network connection','OK') //msg,dismissfunc,title,btnName)
+                  } else {
+                     //alert('Uncaught Error.n' + jqXHR.responseText);
+                     showAlert('Uncaught Error',alertDismissed,'Network connection','OK') //msg,dismissfunc,title,btnName)
+                  }
+            }
+        });
+      }
+
+      function savecafdata(){
+        if($('#cNo').html() == '') {
+          //alert('CAF not selected !\n Please check.');
+          showAlert('CAF not selected !\n Please check.',alertDismissed,'CAF Update result','OK')
+          return false;
+        }
+
+        if ($('#telephone_number').val() == ''){
+          var telNo = (0).toString();
+          //alert('Telephone Number cannot be NULL');
+        }else {
+          var telNo = $.trim($('#telephone_number').val());
+        }
+
+        if($('#mobile_number').val() == '' || $('#email_id').val() == '' || $('#id_number').val() == '' || $('#billing_address').val() == '' || $('#installation_address').val() == ''){
+          //alert('All fields are required.');
+          showAlert('All fields are required.',alertDismissed,'Save CAF Data','OK')
+          getcafdata($('#cNo').html());
+          return false;
+        }
+
+        var defaultUrl = localStorage.getItem("dUrl");
+        var cafNo = $.trim($('#cNo').html());
+        var subsName = $.trim($('#first_name').val());
+        var mobNo = $.trim($('#mobile_number').val());
+        var emailID = $.trim($('#email_id').val());
+        var idType = $.trim($('#id_type option:selected').val());
+        var idNumber = $.trim($('#id_number').val());
+        var bAddr = $.trim($('#billing_address').val());
+        var iAddr = $.trim($('#installation_address').val());
+        var uName = $.trim(localStorage.getItem("uName"));
+
+        //caf/cafNo/{cafNo}/subsName/{subsName}/mobNo/{mobNo}/telNo/{telNo}/emailID/{emailID}/idType/{idType}/idNumber/{idNumber}/bAddr/{bAddr}/iAddr/{iAddr}/uName/{uName}
+        var myUrl = defaultUrl + "/caf/cafNo/" + cafNo + '/subsName/' + subsName + '/mobNo/' + mobNo + '/telNo/' + telNo + '/emailID/' + emailID + '/idType/' + idType 
+                    + '/idNumber/' + idNumber + '/bAddr/' + bAddr + '/iAddr/' + iAddr + '/uName/' + uName ;
+        $.ajax({
+          url : myUrl,
+          dataType   : 'json',
+          crossDomain: true,
+          cache: false,
+          beforeSend : function() {$("#loader").show();},
+          complete   : function() {$("#loader").hide();}, 
+          success    : function(response) {
+                      var myresult = JSON.stringify(response);
+                      //alert(myresult);
+                      showAlert(myresult,alertDismissed,'CAF Update result','OK') //msg,dismissfunc,title,btnName)
+                      getcafdata(cafNo);
+        },
+          error      : function(jqXHR, exception) {
+                        // alert('Hi');
+                        // alert(exception);
+                        // alert(jqXHR.status);
+
+                      if (jqXHR.status === 0) {
+                        showAlert('Not connected. Verify Network.',alertDismissed,'Network connection','OK') 
+                    } else if (jqXHR.status == 404) {
+                         showAlert('Requested page not found. [404]',alertDismissed,'Network connection','OK') 
+                    } else if (jqXHR.status == 500) {
+                         showAlert('Internal Server Error [500].',alertDismissed,'Network connection','OK')
+                    } else if (exception === 'parsererror') {
+                         showAlert('Requested JSON parse failed.',alertDismissed,'Network connection','OK')
+                    } else if (exception === 'timeout') {
+                         showAlert('Time out error.',alertDismissed,'Network connection','OK')
+                    } else if (exception === 'abort') {
+                         showAlert('Ajax request aborted.',alertDismissed,'Network connection','OK')
+                    } else {
+                        showAlert('Uncaught Error',alertDismissed,'Network connection','OK')
+                    }
+  
+                    getcafdata(cafNo);
+              }
+
+        });
+
+      }
+
+</script>
+
+<script>
+  function showAlert(msg,dismissfunc,title,btnName){
+    navigator.notification.alert(
+            msg,  // message
+            dismissfunc,         // callback
+            title,            // title
+            btnName                  // buttonName
+        ); 
+  }
+
+       function showExit(){
+        navigator.notification.confirm(
+            'Close ? ',  // message
+             onConfirm,         // callback
+            'Closing the App',            // title
+            ['OK','Cancel']                   // buttonName
+        ); 
+        function onConfirm(buttonIndex) {
+          //alert('You selected button ' + buttonIndex);  1= Cancel; 2 = Exit
+           if(buttonIndex == 1){
+            navigator.app.exitApp();
+           }
+        }
+       }
+
+      // alert dialog dismissed
+        function alertDismissed() {
+            // do something
+        }
+</script>
+</body>
+</html> 

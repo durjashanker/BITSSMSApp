@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- BootStrap 3 related -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="css/bitsmenu.css" />
+
+  <script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript" src="js/app-exit.js"></script>
+  <script type="text/javascript" src="js/bits.js"></script>
+  
+  <script>
+    function startTime() {
+      var today = new Date();
+      var h = today.getHours();
+      var m = today.getMinutes();
+      var s = today.getSeconds();
+      m = checkTime(m);
+      s = checkTime(s);
+      var strDate =
+      today.toLocaleString("en", { day: "numeric" }) + ' ' +
+      today.toLocaleString("en", { month: "long"  }) + ' ' +
+      today.toLocaleString("en", { year: "numeric"});
+      document.getElementById('txt').innerHTML =
+      strDate + '&emsp;' + h + ":" + m + ":" + s;
+      var t = setTimeout(startTime, 500);
+    };
+    function checkTime(i) {
+      if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+      return i;
+    };
+</script>
+
+</head>
+<body onload="startTime()" style='background-color:lightblue;height:100vh'>
+
+  <div class="mobile-container" style='color:black;background-color:lightblue;'>
+  
+   <!-- Top Navigation Menu -->
+    <nav class="navbar">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#" >
+              <img src="img/logo.png" width="30" height="30" alt="bitslogo" style='border-radius:6px;margin-right:2px;'>
+              BITS SMS
+          </a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <!-- <li><a href="">Home</a></li> -->
+            <li><a href="home.html" style='font-size:16px;'><i class="fa fa-home"></i> HOME</a></li>
+            <li class="active"><a href="#" style='font-size:16px;'><i class="fa fa-user"></i> SUBSCRIBER</a></li>
+            <li><a href="index.html" style='font-size:16px;'><span class="glyphicon glyphicon-log-out"></span> LOGOUT</a></li>
+            <li><a href="#" style='font-size:16px;' onclick="showExit();"><i class="fa fa-close"></i> CLOSE APP</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+     
+     <div class='container-fluid form-inline'>
+      <span><a href="home.html" style='font-size:16px;color:blue !important'><i class="fa fa-arrow-left 2x"></i> Back</a></span>
+      <span class="pull-right" id="txt" style='color:black;'></span>
+    </div> <br/>
+    <!-- <div class='container-fluid pull-right' id="txt" style='color:black;'></div> <br/><br/>  --> <!-- Clock --> 
+ 
+    <div class="container-fluid">
+  
+    <div class="flexsb" >
+       <div><span>LoggedIn as:</span> <span id='usr'></span></div>
+      <div><span>Balance Rs. </span><span id='wBalance'>0.00</span></div>
+    </div>
+  
+    <hr/ style="border:2;border-color:blue; margin-top:2px;margin-bottom:2px;">
+
+    <div class="flexsb">
+        <select id="searchBy" class="form-control">
+          <option value="CustomerID">Customer ID</option>
+          <option value="SMCNo">Smartcard Number</option>
+          <option value="STBNo">STB Number</option>
+        </select>
+      <input type="text" id="searchValue" class="form-control" placeholder="text to search" /> 
+      <input type="button" id="btnSearch" class="btn-primary" value="Search" onclick="searchSubs();" />
+    </div>
+    <div class="flexsb">
+      <span>Customer ID <label name="cid" id='cid'></label></span>
+      <span>State <label name="pstate" id='pstate'>InActive</label></span>
+    </div>
+
+    <div class="flexsb">
+      <div> </div>
+      <div style="color:blue;">PACKAGES LIST</div>
+      <div>Rs. <span id="tAmnt" style="color:red;">0</span></div>
+    </div>
+   <!--  <div class="flexc" id="headMessage">PACKAGES AVAILABLE </div>Total amount is : <span id="tAmnt" style="margin-left:20px;">0</span> -->
+
+    <div class="flexsb" style="border-color:brown; border-style:solid">
+      <span><input type="radio" value="All" name="optradio" checked style="vertical-align:sub" />All</span>
+      <span><input type="radio" value="2" name="optradio" style="vertical-align:sub"/>DPO Packs </span>
+      <span><input type="radio" value="0" name="optradio" style="vertical-align:sub"/>Broadcaster Packs</span>
+      <span><input type="radio" value="1" name="optradio" style="vertical-align:sub"/>Channels</span>
+    </div>
+
+    <div style="height:60vh;width:100%;overflow:auto;">
+      <table class="table-responsive" border=1 cellspacing=2 id="subsProducts" style='background-color:halfwhite;'>
+        <thead>
+        <tr>
+          <th style="width:5%"><input type='checkbox'/></th>
+          <th style="width:15%">Pack No</th>      
+          <th style="width:35%;">Package Name</th>
+          <th style="width:20%">End Date</th>
+          <th style="width:20%">Cost(Rs)</th>
+          <th style="display:none">FRent</th>
+          <th style="display:none;">alacarte</th>
+          <!-- <th>Channels</th> -->
+        </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="flexsb" style="bottom:2px;pisition:fixed;">
+       <input id="btnDActive" type="button" value="DeActive Box" class="btn-danger form-control-sm" />
+       <input id="btnCancel" type="button" value="Cancel" class="btn-warning form-control-sm" />       
+       <input id="btnBuy" type="button" value="Renew/Buy" class="btn-primary form-control-sm" />
+    </div>
+
+<!-- End smartphone / tablet look -->
+</div>
+
+
+<script>
+    $(document).ready(function() {  
+      showUsrName(); 
+      clearData();      
+      getWallet();
+      //getSubsProducts();
+      //$('th:nth-child(4)').hide();   
+
+     $(document).on('change', '[type="radio"]', function() {
+          var currentlyValue = $(this).val(); // Get the radio checked value
+          if (currentlyValue == 'All'){
+            filterTable('');
+          } else {
+          filterTable(currentlyValue);
+          }
+      });
+
+      $('#subsProducts').delegate("tr", "click", function (){
+        var packDetail;
+        packDetail = 'Package No. : ' + $(this).find('td:eq(1)').text();
+        packDetail += '\n' + 'Package Name : ' + $(this).find('td:eq(2)').text();
+        packDetail += '\n' + 'Customer Price : Rs.' + $(this).find('td:eq(4)').text();
+        packDetail += '\n' + 'Franchise Price : Rs.' + $(this).find('td:eq(5)').text();
+
+        showAlert(packDetail,alertDismissed,'Package Details','OK')
+        //alert();
+
+      });
+
+    $('#subsProducts').delegate('input[type="checkbox"]', 'change', function () {
+    if (this.checked) {
+       //alert('Hi');
+       var row = $(this).closest("tr")[0];
+        var temp = parseFloat($('#tAmnt').text());
+        temp = (parseFloat(temp) + parseFloat(row.cells[4].innerHTML));
+        temp = parseFloat(temp).toFixed(2);
+        $('#tAmnt').text(temp);
+        //alert(temp);
+      } else {
+        var row = $(this).closest("tr")[0];
+        //alert('minus' + row.cells[4].innerHTML);
+        var temp = parseFloat($('#tAmnt').text());
+        temp = (parseFloat(temp) - parseFloat(row.cells[4].innerHTML));
+        temp = parseFloat(temp).toFixed(2);
+        $('#tAmnt').text(temp);
+        //alert(temp);
+      }
+
+});
+   
+       $('#cid').on('click', function () {
+        var showData;
+        showData = 'Card Number : ' + localStorage.getItem("SMCNo");
+        showData += '\n' + 'Box Number : ' + localStorage.getItem("STBNo");
+        showData += '\n' + 'CAS Name : ' + localStorage.getItem("CASName");
+        showAlert(showData,alertDismissed,'Customer Details','OK')
+        //alert('clicked');
+        });
+
+  });
+</script>
+
+<script>
+    function showUsrName(){
+       var msg = localStorage.getItem("uName");
+       $('#usr').html(msg);
+    };
+</script>
+ <script>
+      function clearData(){
+        $('#pstate').html('');
+        $('#cid').text('');
+        $("#subsProducts").find("tr td").remove();
+        localStorage.setItem("cafNumber",'');
+        localStorage.setItem("SMCNo",'');
+        localStorage.setItem("STBNo",'');
+        localStorage.setItem("CASName",'');
+      }
+    </script>
+
+<script>
+  function searchSubs() {
+    //clearData();
+    if($('#searchValue').val() == ''){
+      showAlert('Search parameter is Null !\nPlease check.',alertDismissed,'Search Subscribers','OK') //msg,dismissfunc,title,btnName)
+      return false;
+    }
+    var defaultUrl = localStorage.getItem("dUrl");
+    var saveduCode = localStorage.getItem("uCode");
+    var searchString = $('#searchValue').val();
+    var myUrl = defaultUrl + "/Subscribers/uCode/" + saveduCode + "/sString/" + searchString;
+
+    $.ajax({
+        url : myUrl,
+        dataType   : 'json',
+        crossDomain: true,
+        cache: false,
+        beforeSend : function() {$("#loader").show();},
+        complete   : function() {$("#loader").hide();},
+        // data       : {uName : uName, password : uPwd}, 
+        success    : function(response) {
+           var myresult = JSON.stringify(response);
+               var result = JSON.parse(myresult,function (key, value){
+                 return value;
+               });
+            if(result.searchSubs.length != 1){
+                //alert('Cannot find any Customer with search data.\nPlease refine your search !');
+                showAlert('Customer not found',alertDismissed,'Customer Search','OK')
+                clearData();
+                return false;
+            }
+             $.each(result.searchSubs, function(i, field) {
+                 $('#pstate').html(field.PresentState);
+                 if($('#pstate').html()=='Active'){
+                  $('#pstate').css('color','blue');
+                 } else {
+                  $('#pstate').css('color','red');
+                 }
+                 $('#cid').text(field.CustomerID);
+                 //localStorage.setItem("customerID",field.CustomerID);
+                 // $('#cafNo').text(field.CAFNo);
+                 localStorage.setItem("cafNumber",field.CAFNo);
+                 localStorage.setItem("SMCNo",field.SMCNo);
+                 localStorage.setItem("STBNo",field.STBNo);
+                 localStorage.setItem("CASName",field.CASName);
+                 // $('#vcNo').text(field.SMCNo);
+                 // $('#stbNo').text(field.STBNo);
+                 // $('#lcoCode').text(field.RegionID);
+                 
+             });
+             getSubsProducts();
+        },
+             error      : function(jqXHR, exception) {
+                 //clearData();
+                 showAlert('Not connected. Verify Network.',alertDismissed,'Network connection','OK')
+            }
+
+    });
+  }
+</script>
+
+<script>
+     function getWallet(){
+
+      var defaultUrl = localStorage.getItem("dUrl");      
+      var userCode = localStorage.getItem("uCode");
+
+      //alert(userCode);
+      var myUrl = defaultUrl + "/wallet/frCode/" + userCode;
+      $.ajax({
+         url : myUrl,
+          dataType   : 'json',
+          crossDomain: true,
+          cache: false,
+          beforeSend : function() {$("#loader").show();},
+          complete   : function() {$("#loader").hide();},
+          success    : function(response){
+              //alert(response);
+              $('#wBalance').html(response);
+          },
+          error      : function(jqXHR, exception) {
+            showAlert('Not connected. Verify Network.',alertDismissed,'Network connection','OK')
+            //alert('Error No : ' + jqXHR.status);
+          }
+      });
+     }
+</script>
+
+
+<script>
+  function getSubsProducts(){
+
+    $('#subsProducts').find('tr td').remove(); 
+
+    var defaultUrl = localStorage.getItem("dUrl");
+    var customerID = $('#cid').text();
+
+    var myUrl = defaultUrl + "/Subscribers/customerID/" + customerID ;
+
+    $.ajax({
+        url : myUrl,
+        dataType   : 'json',
+        crossDomain: true,
+        cache: false,
+        beforeSend : function() {$("#loader").show();},
+        complete   : function() {$("#loader").hide();},
+        // data       : {uName : uName, password : uPwd}, 
+        success    : function(response) {
+           var myresult = JSON.stringify(response);
+               var result = JSON.parse(myresult,function (key, value){
+                 return value;
+               });
+               //alert(myresult);
+            if(result.subsPacks.length < 1){
+                //alert('Cannot find any Packages being configured.\nPlease check with Administrator !');
+                showAlert('Subscrber has no Packages.\nPlease select a package to buy !',alertDismissed,'Activate / DActivate Subscribers','OK') //msg,dismissfunc,title,btnName)
+                return false;
+            }
+             
+             $.each(result.subsPacks, function(i, field) {
+                var dateStr= (field.EndDate);
+                if(dateStr != null){
+                  dateStr= (dateStr).split(" ")[0];
+                } else { dateStr = ""}
+
+                if(field.PState == 'InActive'){
+                     $("#subsProducts").append("<tr onclick='MyClick(this)' style='background-color:#ff4d4d'><td><input type='checkbox'/></td><td align='center'>" + field.PackNo + "</td><td>" + field.PackName +"</td><td>" + 
+                    JSON.stringify(dateStr).replace(/null/i, "").replace(/\"/g, "") + "</td><td style='text-align:right;'>" + 
+                    JSON.stringify(field.MonthlyRental) + "</td><td style='display:none;'>" +
+                    JSON.stringify(field.FRent) + "</td><td style='display:none;'>" +
+                    JSON.stringify(field.alacarte).replace(/null/i, "").replace(/\"/g, "")  + "</td></tr>");
+
+                } else if (field.PState == 'Active') {
+                       $("#subsProducts").append("<tr onclick='MyClick(this)' style='background-color:#99ccff'><td><input type='checkbox'/></td><td align='center'>" + field.PackNo + "</td><td>" + field.PackName +"</td><td>" + 
+                    JSON.stringify(dateStr).replace(/null/i, "").replace(/\"/g, "") + "</td><td style='text-align:right;'>" + 
+                    JSON.stringify(field.MonthlyRental) + "</td><td style='display:none;'>" +
+                    JSON.stringify(field.FRent) + "</td><td style='display:none;'>" +
+                    JSON.stringify(field.alacarte).replace(/null/i, "").replace(/\"/g, "")  + "</td></tr>");
+                } else {
+                      $("#subsProducts").append("<tr onclick='MyClick(this)'><td><input type='checkbox'/></td><td align='center'>" + field.PackNo + "</td><td>" + field.PackName +"</td><td>" + 
+                    JSON.stringify(dateStr).replace(/null/i, "").replace(/\"/g, "") + "</td><td style='text-align:right;'>" + 
+                    JSON.stringify(field.MonthlyRental) + "</td><td style='display:none;'>" +
+                    JSON.stringify(field.FRent) + "</td><td style='display:none;'>" +
+                    JSON.stringify(field.alacarte).replace(/null/i, "").replace(/\"/g, "")  + "</td></tr>");
+                }
+                
+            }); 
+              
+          },
+             error      : function(jqXHR, exception) {
+                  showAlert('Not connected. Verify Network.',alertDismissed,'Network connection','OK')
+
+            }
+
+    });
+
+  }
+</script>
+<script type="text/javascript">
+    $(function () {
+        //Assign Click event to Button.
+        $("#btnBuy").click(function ()  {
+            //var message = "CustomerId                  PackNo\n";
+            var cid = $('#cid').text();
+            var pno = '';
+                  //Loop through all checked CheckBoxes in GridView.
+                  $("#subsProducts input[type=checkbox]:checked").each(function () {
+                    var row = $(this).closest("tr")[0];
+                      if(pno == ''){
+                         pno += row.cells[1].innerHTML 
+                      }else{
+                         pno += "," + row.cells[1].innerHTML
+                      }
+                    });
+
+                    var defaultUrl = localStorage.getItem("dUrl"); 
+                    var userName = localStorage.getItem("uName");
+                    var myUrl = defaultUrl + "/bulk/CustomerID/" + cid + "/packNo/" + pno + "/uName/'" + userName + "'";
+
+                    alert(pno);
+                      $.ajax({
+                        url : myUrl,
+                        dataType   : 'json',
+                        crossDomain: true,
+                        cache: false,
+                        beforeSend : function() {$("#loader").show();},
+                        complete   : function() {$("#loader").hide();},
+                         success   : function(response){
+                              alert(response);
+                         },
+                         error     : function(jqXHR, exception){
+                         alert('Error No : ' + jqXHR.status);
+                         }
+                      });
+                  
+        });
+    });
+</script>
+<script>
+    function filterTable(f) {
+        $("#subsProducts tr").not('thead tr').each(function () {
+            if ($(this).find("td:eq(6)").text().search(new RegExp(f, "i")) < 0 ) 
+            {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- BootStrap 3 related -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="css/bitsmenu.css" />
+
+  <script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript" src="js/app-exit.js"></script>
+  <script type="text/javascript" src="js/bits.js"></script>
+  
+  <script>
+    function startTime() {
+      var today = new Date();
+      var h = today.getHours();
+      var m = today.getMinutes();
+      var s = today.getSeconds();
+      m = checkTime(m);
+      s = checkTime(s);
+      var strDate =
+        today.toLocaleString("en", { day: "numeric" }) + ' ' +
+        today.toLocaleString("en", { month: "long"  }) + ' ' +
+        today.toLocaleString("en", { year: "numeric"});
+      document.getElementById('txt').innerHTML =
+      strDate + '&emsp;' + h + ":" + m + ":" + s;
+      var t = setTimeout(startTime, 500);
+    }
+    function checkTime(i) {
+      if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+      return i;
+    }
+</script>
+
+</head>
+<body onload="startTime()" style='background-color:lightblue;'>
+
+<!-- Simulate a smartphone / tablet -->
+<div class="mobile-container" style='color:black;background-color:lightblue;'>
+
+    <!-- Top Navigation Menu -->
+    <nav class="navbar">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#" >
+              <img src="img/logo.png" width="30" height="30" alt="bitslogo" style='border-radius:6px;margin-right:2px;'>
+              BITS SMS
+          </a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">  
+            <li class="active"><a href="home.html" style='font-size:16px;'><i class="fa fa-home"  aria-hidden=true></i> HOME</a></li>
+            <li><a href="subscriber.html" style='font-size:16px;'><i class="fa fa-user"  aria-hidden=true></i> SUBSCRIBER</a></li>
+            <li><a href="index.html" style='font-size:16px;'><span class="glyphicon glyphicon-log-out" aria-hidden=true></span> LOGOUT</a></li>
+            <li><a href="#" style='font-size:16px;' onclick="showExit();"><i class="fa fa-close" aria-hidden=true></i> CLOSE APP</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+	
+   
+    <div class='container-fluid pull-right' id="txt" style='color:black;'></div> <br/><br/>  <!-- Clock -->
+ <!--    <center></center> -->
+    	
+    <div class='container-fluid' style='margin-bottom:10px;font-size:medium'>
+      <div class='pull-left'><span>LoggedIn as:</span> <span id='usr'></span></div>
+      <div class='pull-right'><span>Balance Rs. </span><span id='wBalance'>0.00</span></div>
+    </div>
+
+    <div class='container-fluid col-sm-12' style='margin-bottom:10px;'>
+       <button type="button" class="btn mr-1 btn-primary" style='display:block;width:100%;'>
+          <span class="pull-left">Total Subscribers </span><span class="badge badge-light pull-right mt-1" id="totalCount"></span>
+      </button>
+    </div>
+
+    <div class='container-fluid col-sm-12' style='margin-bottom:20px;'>
+      
+      <button type="button" class="btn mb-2 mr-1 btn-success col-sm-4 pull-left">
+          <span class='float-left'>Active </span><span class="badge badge-light float-right mt-1" id="activeCount"></span>
+      </button>
+      <button type="button" class="btn mb-2 mr-1 btn-warning col-sm-4 pull-right" >
+          <span class='float-left' >InActive </span><span class="badge badge-light float-right mt-1" id="inActiveCount"></span>
+      </button>
+    </div>
+
+    <div class='container-fluid'>
+          <hr style='border-color:blue'/>
+    </div>
+
+    <div class='container-fluid'>
+        <p>Click on the below buttons to renew the packages</p>
+    </div>
+    
+    <div class='container-fluid col-sm-12'>
+       <button type='button' class='btn btn-danger' style='display:block; width:100%;margin-bottom:10px;' onclick="gotoftaToday();">
+        <span class="pull-left">Base/FTA Packages expiring today : </span><span class="badge badge-light pull-right mt-1" id="ftaexpToday"></span>
+       </button>
+       <button type='button' class='btn btn-warning' style='display:block; width:100%;margin-bottom:10px;' onclick="gotoothersToday();">
+        <span class="pull-left">Other Packages expiring today : </span><span class="badge badge-light pull-right mt-1" id="othexpToday"></span>
+       </button>
+       <button type='button' class='btn btn-info' style='display:block; width:100%;margin-bottom:10px;' onclick="gotoallin7Days();">
+        <span class="pull-left">Packages expiring in 7 days : </span><span class="badge badge-light pull-right mt-1" id="othexp7days"></span>
+      </button>   
+    </div>
+    <hr/>
+    <div class='container-fluid text-dark'>
+	   <!--  <h3 style="margin-top:2px;">Search for Subscriber by :</h3>
+  		<div style="margin-bottom:5px;">
+  		     <select id="searchBy" class="form-control">
+  			  <option value="CustomerID">Customer ID</option>
+  			  <option value="SMCNo">Smartcard Number</option>
+  			  <option value="STBNo">STB Number</option>
+  			 </select>
+  		</div>
+  		<input type="text" id="searchValue" class="form-control" placeholder="type your search text here" /> -->
+        <b>Most viewed packages (Top 5)</b>
+        <button type="button" class="btn btn-primary btn-sm pull-right" id="refreshwLogs" onclick="getWalletLogs();" style="margin-bottom:5px;">
+          <span class="glyphicon glyphicon-refresh"></span> Refresh
+        </button>
+
+        <!-- <div style="margin-top:2vh;height:28vh;width:100%;overflow:auto;">
+          <b>Wallet Transactions (Recent 10)</b>
+          <table class="table-striped table-responsive" border=1 cellspacing=2 id="wHistory">
+          <thead>
+            <tr>
+                <th align="center">Date</th>
+                <th>Franchise</th>    
+                <th>Debit</th>
+                <th>Credit</th>
+                <th>Details</th>
+            </tr>
+          </thead>
+          <tbody style="white-space:nowrap;"></tbody>
+          </table>
+        </div> -->
+        <div style="margin-top:2vh;height:28vh;width:100%;overflow:auto;">
+          <table class="table-striped table-responsive" border=1 cellspacing=2 id="pkgTrends">
+          <thead>
+            <tr>
+                <th align="center">Package No</th>
+                <th>Package Name</th>    
+                <th>STB Count</th>
+            </tr>
+          </thead>
+          <tbody style="white-space:nowrap;"></tbody>
+          </table>
+        </div>
+    </div>
+<!-- End smartphone / tablet look -->
+</div>
+   <script>
+    function gotoftaToday(){
+	  localStorage.setItem("numDays","0");
+	  localStorage.setItem("pType","FTA");
+	  window.location.href = 'ftatoday.html';	   
+	}
+	function gotoothersToday(){
+	  localStorage.setItem("numDays","0");
+	  localStorage.setItem("pType","ALL");
+	  window.location.href = 'ftatoday.html';
+	}
+	function gotoallin7Days(){
+	  localStorage.setItem("numDays","7");
+	  localStorage.setItem("pType","ALL");
+	  window.location.href = 'ftatoday.html';
+	}
+   </script>
+    
+    <script>
+      $(document).ready(function() {      
+        clearData();
+        showUsrName();
+        getStatistics();
+        getWallet();
+        //getWalletLogs();  
+      });
+    </script>
+
+    <script>
+      function showUsrName(){
+         var msg = localStorage.getItem("uName");
+         $('#usr').html(msg);
+      }
+    </script>
+    <script>
+      function clearData(){
+        $('#usr').html('');
+        $('#totalCount').text('0');
+        $('#activeCount').text('0');
+        $('#inActiveCount').text('0');
+      }
+    </script>
+	
+    <script>
+       function getStatistics(){
+        var defaultUrl = localStorage.getItem("dUrl");      
+        var userName = localStorage.getItem("uName");
+        var myUrl = defaultUrl + "/statistics/uName/" + userName.trim();
+        //alert(myUrl);
+        $.ajax({
+            url : myUrl,
+            dataType   : 'json',
+            crossDomain: true,
+            cache: false,
+            beforeSend : function() {$("#loader").show();},
+            complete   : function() {$("#loader").hide();},
+            success    : function(response){
+              var myresult = JSON.stringify(response);
+              //alert(myresult);
+              var result = JSON.parse(myresult,function (key, value){
+                             return value;
+                           });
+                     //alert(result);
+                     $.each(result.networkStats, function(i, field) {
+                         $('#totalCount').text(field.totalcount);
+                          $('#activeCount').text(field.activeCount);
+                          $('#inActiveCount').text(field.inactiveCount); 
+
+                          $('#ftaexpToday').text(field.fetc);
+                          $('#othexpToday').text(field.opetc);
+                          $('#othexp7days').text(field.pein7dc);
+                        /*if(field.errorMessage == 'Success'){
+                         
+                        } */                  
+                     });
+                     $.each(result.packageTrends,function(i,field){
+                        $("#pkgTrends").append("<tr><td align='left'>" + 
+                        JSON.stringify(field.PackageNo) + "</td><td>" +
+                        JSON.stringify(field.PackName).replace(/\"/g, "") + "</td><td>" +  
+                        JSON.stringify(field.actpackCount) + "</td></tr>" ); 
+                        });
+                  // });
+
+            },
+            error      : function(jqXHR, exception) {
+              showAlert('Not connected. Verify Network.',alertDismissed,'Get Statistics','OK');
+              //alert(jqXHR.status );
+            }
+          });
+       
+       }
+    </script>
+    <script>
+       function getWallet(){
+        var defaultUrl = localStorage.getItem("dUrl");      
+        var userCode = localStorage.getItem("uCode");
+        //alert(userCode);
+        var myUrl = defaultUrl + "/wallet/frCode/" + userCode;
+        $.ajax({
+           url : myUrl,
+            dataType   : 'json',
+            crossDomain: true,
+            cache: false,
+            beforeSend : function() {$("#loader").show();},
+            complete   : function() {$("#loader").hide();},
+            success    : function(response){
+                //alert(response);
+                $('#wBalance').html(response);
+            },
+            error      : function(jqXHR, exception) {
+              showAlert('Not connected. Verify Network.',alertDismissed,'Get Wallet data','OK');
+              //alert('Error No : ' + jqXHR.status);
+            }
+        });
+       }
+    </script>
+
+    <script>
+      function getWalletLogs(){
+        var defaultUrl = localStorage.getItem("dUrl");      
+        var userCode = localStorage.getItem("uCode");
+        
+        var myUrl = defaultUrl + "/walletlogs/frCode/" + userCode + "/nDays/10";
+        //alert(myUrl);
+        $.ajax({
+            url : myUrl,
+            dataType   : 'json',
+            crossDomain: true,
+            cache: false,
+            beforeSend : function() {$("#loader").show();},
+            complete   : function() {$("#loader").hide();},
+            success    : function(response){
+               var myresult = JSON.stringify(response);
+               var result = JSON.parse(myresult,function (key, value){
+                 return value;
+               });
+               if(result.walletLogs.length < 1){
+                showAlert('There are no Transaction logs for this Franchise !',alertDismissed,'Wallet Logs','OK');
+                return false;
+                }
+				
+                 $.each(result.walletLogs, function(i, field) {                  
+                  $("#wHistory").append("<tr onclick='MyClick(this)'><td align='left'>" + 
+                    JSON.stringify(field.CreateDate).replace(/null/i, "").replace(/\"/g, "").replace(/T/i," ") + "</td><td>" + 
+                    field.FranchiseCode +"</td><td>" +  
+                    JSON.stringify(field.Debit).replace(/null/i, "").replace(/\"/g, "")  + "</td><td>" + 
+                    JSON.stringify(field.Credit).replace(/null/i, "").replace(/\"/g, "")  + "</td><td>" + 
+                    field.TxnDetails + "</td></tr>" ); 
+                 });
+                 
+            },
+            error      : function(jqXHR, exception) {
+              showAlert('Not connected. Verify Network.',alertDismissed,'Get Wallet logs','OK');
+              //alert('Error No : ' + jqXHR.status);
+            }
+        });
+        getWallet();
+      }
+    </script>
+
+</body>
+</html>

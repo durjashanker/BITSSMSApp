@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- BootStrap 3 related -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="css/bitsmenu.css" />
+
+  <script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript" src="js/app-exit.js"></script>
+  <script type="text/javascript" src="js/bits.js"></script>
+  
+  <script>
+    function startTime() {
+      var today = new Date();
+      var h = today.getHours();
+      var m = today.getMinutes();
+      var s = today.getSeconds();
+      m = checkTime(m);
+      s = checkTime(s);
+      var strDate =
+      today.toLocaleString("en", { day: "numeric" }) + ' ' +
+      today.toLocaleString("en", { month: "long"  }) + ' ' +
+      today.toLocaleString("en", { year: "numeric"});
+      document.getElementById('txt').innerHTML =
+      strDate + '&emsp;' + h + ":" + m + ":" + s;
+      var t = setTimeout(startTime, 500);
+    };
+    function checkTime(i) {
+      if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+      return i;
+    };
+</script>
+
+</head>
+<body onload="startTime()" style='background-color:lightblue;'>
+
+<!-- Simulate a smartphone / tablet -->
+<div class="mobile-container" style='color:black;background-color:lightblue;'>
+  
+   <!-- Top Navigation Menu -->
+    <nav class="navbar">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#" >
+              <img src="img/logo.png" width="30" height="30" alt="bitslogo" style='border-radius:6px;margin-right:2px;'>
+              BITS SMS
+          </a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <!-- <li class="active"><a href="#">Home</a></li> -->
+            <li><a href="home.html" style='font-size:16px;'><i class="fa fa-home"></i> HOME</a></li>
+            <li><a href="subscriber.html" style='font-size:16px;'><i class="fa fa-user"></i> SUBSCRIBER</a></li>  
+            <li><a href="index.html" style='font-size:16px;'><span class="glyphicon glyphicon-log-out"></span> LOGOUT</a></li>
+            <li><a href="#" style='font-size:16px;' onclick="showExit();"><i class="fa fa-close"></i> CLOSE APP</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class='container-fluid form-inline'>
+      <span><a href="home.html" style='font-size:16px;color:blue !important'><i class="fa fa-arrow-left 2x"></i> Back</a></span>
+      <span class="pull-right" id="txt" style='color:black;'></span>
+    </div> <br/>
+
+    <!-- <div class='container-fluid pull-right' id="txt" style='color:black;'></div> <br/><br/>  --> <!-- Clock -->
+ 
+    <div class="container-fluid">
+	
+    <div class="flexsb" >
+       <div><span>LoggedIn as:</span> <span id='usr'></span></div>
+      <div><span>Balance Rs. </span><span id='wBalance'>0.00</span></div>
+    </div>
+	
+	<hr/ style="border:2;border-color:blue; margin-top:2px;">
+	
+    <div class="flexc" id="headMessage" style="color:blue;text-transform:uppercase;">FTA EXPIRING TODAY</div>
+    <!-- <input type="text" class="form-control sBox" placeholder="enter text to search for"> -->
+	
+	<div class="flexsb" style="width:100%">
+		<input type="text" id="sCID" placeholder="search CID" style="width:26%;">
+		<input type="text" id="sCAS" placeholder="search CAS" style="width:25%;left:0;">
+		<input type="text" id="sPACK" placeholder="search Package" style="width:30%">
+		<input type="text" disabled=true style="width:15%">
+	</div>
+
+	<div style="height:65vh;width:100%;overflow:auto;">
+	  <table class="table-responsive" border=1 cellspacing=2 id="ftaToday" style='background-color:halfwhite;'>
+	  <thead>
+		<tr>
+		    <th style="width:5%"><input type='checkbox'/></th>
+  			<th style="width:20%">Cust. ID</th>
+  			<th style="width:25%">CAS</th> 
+        <th style="display:none;">Pack No</th>			
+  			<th style="width:30%;">Package</th>
+  			<th style="width:15%">Rent</th>
+			  <th style="display:none;">Card No</th>
+        <th style="display:none;">Box No</th>
+		</tr>
+	  </thead>
+	  <tbody></tbody>
+	  </table>
+
+	 <input id="btnGet" type="button" value="Renew Selected" class="block btn-primary" style="bottom:5px;position:fixed;" />
+
+	</div>
+	
+	</div>
+	<!-- Image loader -->
+		<div id='loader'>
+		  <img src='img/processing.gif' width='32px' height='32px'>
+		  Loading.... Please wait
+		</div>
+	<!-- Image loader -->
+
+<!-- End smartphone / tablet look -->
+</div>
+	<style>
+		#loader {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			text-align: center;
+			color: white;
+			background: rgba(0, 0, 0, 0.5);
+			padding-top: 35%;
+			display: none;
+		}
+		tr > th {word-break: break-all;}
+		tr > td {word-break: break-all;}
+		table
+		{
+			table-layout: fixed;
+			width: 100%;
+		}
+	</style>
+
+<script>
+      $(document).ready(function() {  
+        //document.addEventListener("backbutton", onBackKeyDown, false);
+        var userCode = localStorage.getItem("uCode"); 
+        showUsrName();       
+       if (userCode != 1) {     
+          getWallet();
+		      //alert(userCode);
+    		  getPackList();
+    		  
+    		  //$('th:nth-child(4)').hide();
+    		  
+    		 var nDays = localStorage.getItem("numDays");
+    		 var pType = localStorage.getItem("pType");
+    		 var headString = ""
+    		 
+    		 if (pType == 'FTA') {
+    		     headString = "FTA Packages";
+                 } else { 
+    			 headString = "Packages";
+    			 }
+    			 
+    		if (nDays == '0') { 
+    		     headString += " Expiring Today";
+    		     } else {	 
+    			 headString += " Expiring in 7 Days";
+    			 }
+    		  
+    		 $('#headMessage').text(headString);	
+
+        }		
+     
+        $("#ftaToday").delegate("tr", "click", function (){
+           var rowData ;
+           rowData = 'Customer ID : ' + $(this).find('td:eq(1)').text();
+           rowData += '\n' + 'CAS Name : ' + $(this).find('td:eq(2)').text();
+           rowData += '\n' + 'Card Number : ' + $(this).find('td:eq(6)').text();
+           rowData += '\n' + 'Box Number : ' + $(this).find('td:eq(7)').text();
+           showAlert(rowData,alertDismissed,'Customer Details','OK')
+        });
+
+
+      });
+    </script>
+    <script>
+       function clearrowData(){
+
+       }
+    </script>
+    <script>
+      function showUsrName(){
+         var msg = localStorage.getItem("uName");
+         $('#usr').html(msg);
+      }
+    </script>
+
+<script>
+       function getWallet(){
+
+        var defaultUrl = localStorage.getItem("dUrl");      
+        var userCode = localStorage.getItem("uCode");
+
+        //alert(userCode);
+        var myUrl = defaultUrl + "/wallet/frCode/" + userCode;
+        $.ajax({
+           url : myUrl,
+            dataType   : 'json',
+            crossDomain: true,
+            cache: false,
+            beforeSend : function() {$("#loader").show();},
+            complete   : function() {$("#loader").hide();},
+            success    : function(response){
+                //alert(response);
+                $('#wBalance').html(response);
+            },
+            error      : function(jqXHR, exception) {
+              showAlert('Not connected. Verify Network.',alertDismissed,'Network connection','OK')
+              //alert('Error No : ' + jqXHR.status);
+            }
+        });
+       }
+    </script>
+	<script>
+      function getPackList(){
+	    
+        var defaultUrl = localStorage.getItem("dUrl");      
+        var userName = localStorage.getItem("uName");
+		    var noDays = localStorage.getItem("numDays");
+		    var pType = localStorage.getItem("pType");
+        var myUrl = defaultUrl + "/bulk/packType/" + pType + "/noDays/" + noDays + "/uName/'" + userName + "'";
+        //alert(myUrl);
+	
+        $.ajax({
+            url : myUrl,
+            dataType   : 'json',
+            crossDomain: true,
+            cache: false,
+            beforeSend : function() {$("#loader").show();},
+            
+            success    : function(response){
+               var myresult = JSON.stringify(response);
+               var result = JSON.parse(myresult,function (key, value){
+                 return value;
+               });
+			   
+               if(result.packforRenewal.length < 1){
+                showAlert('There are no packages expiring !',alertDismissed,'Packages Expiring List','OK');
+                return false;
+                }
+				
+        				var proceed = 'false';
+        			    if(result.packforRenewal.length == 1) {
+        				   $.each(result.packforRenewal, function(i, field) {
+        				         if(field.errorMessage != null){
+        					     //alert(field.errorMessage);
+                       var errMsg = field.errorMessage;
+                       showAlert('No rows found !',alertDismissed,'Get packages for Renewal','OK');
+        						 }else {
+        						 proceed = 'true';
+        						 }					  
+        					 }); 
+                      if (proceed == 'false'){
+        					    return false;
+        					 }					 
+        				}
+				
+                 $.each(result.packforRenewal, function(i, field) {                  
+                  $("#ftaToday").append("<tr onclick='MyClick(this)'><td><input type='checkbox'/></td><td align='left'>" + 
+                    field.CustomerID + "</td><td>" + 
+                    field.CASName + "</td><td style='display:none;'>" + 
+                    field.PackageNo + "</td><td>" +					
+                    field.PackageName + "</td><td align='left'>" +                     
+                    field.MonthlyRental + "</td><td style='display:none;'>" + 
+                    field.SMCNo + "</td><td style='display:none;'>" + 
+                    field.STBNo + "</td></tr>" ); 
+                 });
+            },
+            error      : function(jqXHR, exception) {
+              showAlert('Not connected. Verify Network.',alertDismissed,'Network connection','OK')
+            },
+			complete   : function() {$("#loader").hide();}
+        });
+      }
+    </script>
+
+<script type="text/javascript">
+    $(function () {
+        //Assign Click event to Button.
+        $("#btnGet").click(function () {
+            var message = "CustomerId                  PackNo\n";
+			var cid = '';
+			var pno = '';
+            //Loop through all checked CheckBoxes in GridView.
+            $("#ftaToday input[type=checkbox]:checked").each(function () {
+                var row = $(this).closest("tr")[0];
+                //message += "   " + row.cells[1].innerHTML;
+                //message += "   " + row.cells[3].innerHTML;
+                //message += "\n"; 
+        				if(cid == ''){
+        				   cid += row.cells[1].innerHTML
+        				   pno += row.cells[3].innerHTML 
+        				}else{
+        				   cid += "," + row.cells[1].innerHTML
+        				   pno += "," + row.cells[3].innerHTML
+        				}
+        				
+            });
+ 
+            //Display selected Row data in Alert Box.
+            //alert(message);
+			//alert(cid + ": " + pno);
+            //return false;
+			
+    		var defaultUrl = localStorage.getItem("dUrl"); 
+    		var userName = localStorage.getItem("uName");
+        var myUrl = defaultUrl + "/bulk/CustomerID/" + cid + "/packNo/" + pno + "/uName/'" + userName + "'";
+			$.ajax({
+			    url : myUrl,
+				dataType   : 'json',
+				crossDomain: true,
+				cache: false,
+				beforeSend : function() {$("#loader").show();},
+				complete   : function() {$("#loader").hide();},
+				 success   : function(response){
+              showAlert(response,alertDismissed,'Buy / Cancel Package(s)','OK')
+				      alert(response);
+				 },
+				 error     : function(jqXHR, exception){
+          showAlert('Error No : ' + jqXHR.status,alertDismissed,'Buy / Cancel Package(s)','OK')
+				  //alert('Error No : ' + jqXHR.status);
+				 }
+			});
+			
+        });
+    });
+</script>
+<script>
+	$("#sCID").on('keyup', function () {
+		 filterTable(); 
+	});
+	$("#sCAS").on('keyup', function () {
+	     //alert('in filter1');
+		 filterTable(); 
+	});	
+	$("#sPACK").on('keyup', function () {
+		 filterTable(); 
+	});
+    </script>
+<script>
+        function filterTable() {
+		    //alert('in filter2');
+            var f = $('#sCID').val();
+            var f1 = $('#sCAS').val();
+			var f2 = $('#sPACK').val();
+            $("#ftaToday tr").not('thead tr').each(function () {
+                if ($(this).find("td:eq(1)").text().search(new RegExp(f, "i")) < 0 || $(this).find("td:eq(2)").text().search(new RegExp(f1, "i")) < 0 || $(this).find("td:eq(4)").text().search(new RegExp(f2, "i")) < 0) 
+				{
+                    $(this).hide();
+                } else {
+                    $(this).show();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
