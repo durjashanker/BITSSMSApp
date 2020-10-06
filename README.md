@@ -1,2 +1,2 @@
-# BITSSMSApp
-Nandyal Port 82
+# BITSMobApp
+BITS-SMS App

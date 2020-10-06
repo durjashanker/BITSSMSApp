@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="css/bitsmenu.css" />
+
+  <script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript" src="js/app-exit.js"></script>
+  <script type="text/javascript" src="js/bits.js"></script>
+
+
+<style>
+  ul {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+    grid-column-gap: 40px;
+}
+ li {color:black;}
+ ul {
+  list-style: none;
+  
+}
+
+ul li:before {
+  content: '✓';
+  margin-right:5px;
+  color:forestgreen;
+}
+</style>
+<script>
+    function startTime() {
+      var today = new Date();
+      var h = today.getHours();
+      var m = today.getMinutes();
+      var s = today.getSeconds();
+      m = checkTime(m);
+      s = checkTime(s);
+      var strDate =
+        today.toLocaleString("en", { day: "numeric" }) + ' ' +
+        today.toLocaleString("en", { month: "long"  }) + ' ' +
+        today.toLocaleString("en", { year: "numeric"});
+      document.getElementById('txt').innerHTML =
+      strDate + '&emsp;' + h + ":" + m + ":" + s;
+      var t = setTimeout(startTime, 500);
+    }
+    function checkTime(i) {
+      if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+      return i;
+    }
+</script>
+
+</head>
+<body onload="startTime()" style='background-color:lightblue;'>
+
+<!-- Simulate a smartphone / tablet -->
+<div class="mobile-container" style='background-color:lightblue;'>
+
+<nav class="navbar">
+    <div class="container-fluid">
+        <div class="navbar-header form-inline">
+          <a class="navbar-brand" href="#" >
+              <img src="img/logo.png" width="30" height="30" alt="bitslogo" style='border-radius:6px;margin-right:2px;'>
+              BITS SMS
+          </a>
+          <a class="navbar-brand pull-right" href="#" style='font-size:22px;' onclick="showExit();"><i class="fa fa-close" aria-hidden=true></i> </a>
+        </div>
+    </div>
+</nav>
+
+
+<div class='pull-right' id="txt" style='color:black;'></div> <br/>  <!-- Clock -->
+
+<center><h4 style="color:blue;">ATMAKUR COMMUNICATION NETWORK</h4></center>
+
+<center>
+<img src='img/logo.png' width="80" height:"80" alt="bitslogo" style="margin-top:15%; border-radius:10px;"><br/>
+<span style="color:blue;">Balaji IT Solutions</span>
+</center>
+
+<div class="container-fluid form-horizontal" style="margin-top:30%;width:80%;">
+  <div class="input-group">
+      <span class="input-group-addon"><i class='fa fa-user' style='font-size:16px;' aria-hidden="true"></i></span>
+      <input type="text" id="uname" class="form-control" placeholder='enter user name' style='background-color:lightyellow;' required/>
+   </div>
+   <br/>
+   <div class="input-group">
+      <span class="input-group-addon"><i class='fa fa-key' style='font-size:16px;' aria-hidden="true"></i></span>
+      <input type="password" id="pwd" class="form-control" placeholder="enter password" style='background-color:lightyellow;' required/>
+      
+   </div>
+   <br/>
+   <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-10">
+        <button type="submit" class="btn btn-primary pull-right" onclick="signIn()";>LogIn</button>
+        </div>
+    </div>
+    <!-- <hr/> -->
+    
+</div>
+<!-- <div class="container-fluid row" style='bottom:0;position:fixed; '>
+     <ul>
+     <li>TRAI Audits</li>
+     <li>Schedule III</li>
+     <li>Weekly Reports</li>
+     <li>Billing</li>
+
+     <li>Broadcaster Audits</li>
+     <li>Broadcaster reports</li>
+     <li>Auto InActive</li>
+     <li>Franchise Portal</li>
+
+     <li>Bulk Operations</li>
+     <li>Area Commands</li>
+     <li>Payment Gateway</li>
+     <li>Mobile Application</li>
+    </ul>
+</div> -->
+
+<!-- End smartphone / tablet look -->
+</div>
+
+<script>
+function myFunction() {
+  var x = document.getElementById("myLinks");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+</script>
+<script>
+  $(document).ready(function(){
+    localStorage.setItem("uName",'');
+    localStorage.setItem("uType",'');
+    localStorage.setItem("uCode",'');
+	  localStorage.setItem("numDays","0");
+	  localStorage.setItem("pType","ALL");
+  });
+</script>
+ <script>
+      function signIn(){
+           // window.location='customer.html';
+           if(($('#uname').val()=='')|| ($('#pwd').val()=='')){
+            //alert('Username & Password are required !');
+            showuNameuPwdAlert();
+            return false;
+           }
+            var defaultUrl = "http://103.41.98.237:82";
+            //var defaultUrl = "http://localhost:52068";
+            //var defaultUrl = "http://117.215.129.17"; // Aatmakur
+            //var defaultUrl = "http://117.198.211.10"; // Surya Digital
+            var uName = $('#uname').val();
+            var uPwd = $('#pwd').val();
+            var myUrl = defaultUrl + "/signin/uName/" + uName + "/uPwd/" + uPwd;
+            //alert(myUrl);
+         $.ajax({
+            url : myUrl,
+            dataType   : 'json',
+            crossDomain: true,
+            cache: false,
+            beforeSend : function() {$("#loader").show();},
+            complete   : function() {$("#loader").hide();},
+            // data       : {uName : uName, password : uPwd}, 
+            success    : function(response) {
+               var myresult = JSON.stringify(response);
+                //alert(myresult);
+                   var result = JSON.parse(myresult,function (key, value){
+                     return value;
+                   });
+                //alert(result);
+                if(result.uDetails.length !=1){
+                    alert('User Name or Password is wrong.\nPlease check !');
+                    showinvalidCredentials();
+                    return false;
+                }
+
+                    var proceed = 'false';
+                    if(result.uDetails.length == 1) {
+                      proceed = 'true';
+                     $.each(result.uDetails, function(i, field) {
+                        
+                        localStorage.setItem("uName",field.UserName );
+                        localStorage.setItem("uType",field.UserType);
+                        localStorage.setItem("uCode",field.UserCode);
+                        localStorage.setItem("dUrl", defaultUrl);         
+                     }); 
+                                                
+                    }
+
+                    if (proceed == 'false'){
+                        return false;
+                     }    
+
+
+                 var msg = "Welcome user : " + localStorage.getItem("uName");
+                 window.location='home.html';
+
+            },
+                 error      : function(jqXHR, exception) {
+         	if (jqXHR.status === 0) {
+                      showAlert('Not connected. Verify Network.',alertDismissed,'Network connection','OK') //msg,dismissfunc,title,btnName)
+                  } else if (jqXHR.status == 404) {
+                      //alert('Requested page not found. [404]');
+                       showAlert('Requested page not found. [404]',alertDismissed,'Network connection','OK') //msg,dismissfunc,title,btnName)
+                  } else if (jqXHR.status == 500) {
+                      //alert('Internal Server Error [500].');
+                       showAlert('Internal Server Error [500].',alertDismissed,'Network connection','OK') //msg,dismissfunc,title,btnName)
+                  } else if (exception === 'parsererror') {
+                      //alert('Requested JSON parse failed.');
+                       showAlert('Requested JSON parse failed.',alertDismissed,'Network connection','OK') //msg,dismissfunc,title,btnName)
+                  } else if (exception === 'timeout') {
+                      //alert('Time out error.');
+                       showAlert('Time out error.',alertDismissed,'Network connection','OK') //msg,dismissfunc,title,btnName)
+                  } else if (exception === 'abort') {
+                      //alert('Ajax request aborted.');
+                       showAlert('Ajax request aborted.',alertDismissed,'Network connection','OK') //msg,dismissfunc,title,btnName)
+                  } else {
+                     // alert('Uncaught Error.n' + jqXHR.responseText);
+                      showAlert('Uncaught Error',alertDismissed,'Network connection','OK') //msg,dismissfunc,title,btnName)
+                  }
+		     }
+
+	     });
+      }
+    </script>
+    
+</body>
+</html>

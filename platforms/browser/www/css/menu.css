@@ -1,0 +1,92 @@
+.icon-bar {
+    width: 100%;
+    background-color: #555;
+    overflow: auto;
+}
+
+.icon-bar a {
+    float: left;
+    width: 20%;
+    text-align: center;
+    padding: 12px 0;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 26px;
+}
+
+.icon-bar a:hover {
+    background-color: #000;
+}
+
+.active {
+    background-color: #4CAF50;
+}
+
+.searchBar{
+    text-align:center;
+    margin-top:10px;
+    font-size:small;
+}
+span.searchBar {
+    padding-top:5px;
+}
+
+.adaScreen {
+    display:none;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 4px;
+}
+
+/*tr:nth-child(even) {
+    background-color: #dddddd;
+}*/
+
+table caption {
+    text-align:left;
+    font-weight:bold;
+    color:blue;
+}
+
+th {
+    color:black;
+    background-color: #dddddd;
+    border-bottom:1px solid gray;
+}
+
+.mytab {
+  /*margin-left:1em;*/
+  float:right;
+}
+
+.pActive {
+    background-color: green;
+    color:white;
+    border-radius:10px;
+    font-size:18px; 
+}
+.pInActive {
+    background-color: red;
+    color:white;
+     font-size:18px; 
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.row {
+    padding-bottom:3px;
+}
+
+
